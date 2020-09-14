@@ -61,6 +61,7 @@ type PredictorsConfig struct {
 	Xgboost    PredictorConfig `json:"xgboost,omitempty"`
 	SKlearn    PredictorConfig `json:"sklearn,omitempty"`
 	PyTorch    PredictorConfig `json:"pytorch,omitempty"`
+	TorchServe PredictorConfig `json:"torchserve,omitempty"`
 	ONNX       PredictorConfig `json:"onnx,omitempty"`
 }
 

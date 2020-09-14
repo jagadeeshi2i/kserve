@@ -48,6 +48,15 @@ data:
             ],
             "multiModelServer": "false"
         },
+        "torchserve": {
+            "image": "pytorch/torchserve",
+            "defaultImageVersion": "latest",
+            "defaultGpuImageVersion": "latest-gpu",
+            "supportedFrameworks": [
+              "pytorch"
+            ],
+            "multiModelServer": "false"
+        },
         "triton": {
             "image": "nvcr.io/nvidia/tritonserver",
             "defaultImageVersion": "20.03-py3",

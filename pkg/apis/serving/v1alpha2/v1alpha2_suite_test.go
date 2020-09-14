@@ -42,6 +42,8 @@ const (
 	DefaultSKLearnRuntimeVersion        = "0.1.0"
 	DefaultPyTorchRuntimeVersion        = "0.1.0"
 	DefaultPyTorchRuntimeVersionGPU     = "0.1.0-gpu"
+	DefaultTorchServeRuntimeVersion     = "latest"
+	DefaultTorchServeRuntimeVersionGPU  = "latest-gpu"
 	DefaultXGBoostRuntimeVersion        = "0.1.0"
 	DefaultTritonISRuntimeVersion       = "19.05-py3"
 	DefaultONNXRuntimeVersion           = "v0.5.0"
@@ -87,6 +89,11 @@ func TestMain(m *testing.M) {
 				"image" : "kfserving/pytorchserver",
 				"defaultImageVersion": "0.1.0",
                 "defaultGPUImageVersion": "0.1.0-gpu"
+			},
+			"torchserve" : {
+				"image" : "pytorch/torchserve",
+				"defaultImageVersion": "latest",
+                "defaultGPUImageVersion": "latest-gpu"
 			},
 			"onnx" : {
 				"image" : "onnxruntime/server",

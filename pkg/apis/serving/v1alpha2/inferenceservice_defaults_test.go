@@ -113,6 +113,36 @@ func TestPyTorchDefaults(t *testing.T) {
 	g.Expect(isvc.Spec.Canary.Predictor.PyTorch.Resources.Requests[v1.ResourceMemory]).To(gomega.Equal(resource.MustParse("3Gi")))
 }
 
+func TestTorchServeDefaults(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+	isvc := InferenceService{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "foo",
+			Namespace: "default",
+		},
+		Spec: InferenceServiceSpec{
+			Default: EndpointSpec{
+				Predictor: PredictorSpec{
+					TorchServe: &TorchServeSpec{StorageURI: "gs://testbucket/testmodel"},
+				},
+			},
+		},
+	}
+	isvc.Spec.Canary = isvc.Spec.Default.DeepCopy()
+	isvc.Spec.Canary.Predictor.TorchServe.RuntimeVersion = constants.KFServingDefaultVersion
+	isvc.Spec.Canary.Predictor.TorchServe.Resources.Requests = v1.ResourceList{v1.ResourceMemory: resource.MustParse("3Gi")}
+	isvc.Default(c)
+
+	g.Expect(isvc.Spec.Default.Predictor.TorchServe.RuntimeVersion).To(gomega.Equal(DefaultTorchServeRuntimeVersion))
+	g.Expect(isvc.Spec.Default.Predictor.TorchServe.Resources.Requests[v1.ResourceCPU]).To(gomega.Equal(defaultResource[v1.ResourceCPU]))
+	g.Expect(isvc.Spec.Default.Predictor.TorchServe.Resources.Requests[v1.ResourceMemory]).To(gomega.Equal(defaultResource[v1.ResourceMemory]))
+	g.Expect(isvc.Spec.Default.Predictor.TorchServe.Resources.Limits[v1.ResourceCPU]).To(gomega.Equal(defaultResource[v1.ResourceCPU]))
+	g.Expect(isvc.Spec.Default.Predictor.TorchServe.Resources.Limits[v1.ResourceMemory]).To(gomega.Equal(defaultResource[v1.ResourceMemory]))
+	g.Expect(isvc.Spec.Canary.Predictor.TorchServe.RuntimeVersion).To(gomega.Equal(constants.KFServingDefaultVersion))
+	g.Expect(isvc.Spec.Canary.Predictor.TorchServe.Resources.Requests[v1.ResourceCPU]).To(gomega.Equal(defaultResource[v1.ResourceCPU]))
+	g.Expect(isvc.Spec.Canary.Predictor.TorchServe.Resources.Requests[v1.ResourceMemory]).To(gomega.Equal(resource.MustParse("3Gi")))
+}
+
 func TestSKLearnDefaults(t *testing.T) {
 	g := gomega.NewGomegaWithT(t)
 	isvc := InferenceService{

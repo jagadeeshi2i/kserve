@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-conv-pod
+spec:
+  volumes:
+    - name: persistent-storage
+      persistentVolumeClaim:
+        claimName: model-pv-claim
+  initContainers:
+    - name: data-permission-fix
+      image: busybox
+      command: ["/bin/chmod","-R","777", "/data"]
+      volumeMounts:
+      - name: persistent-storage
+        mountPath: /data
+  containers:
+    - name: model-conv-container
+      image: jagadeeshj/margen:dev01
+      volumeMounts:
+        - mountPath: "/home/model-server/shared"
+          name: persistent-storage
+      resources:
+        limits:
+          cpu: 1
+          memory: 4Gi
+          nvidia.com/gpu: 0
+        requests:
+          cpu: 1
+          memory: 1Gi
